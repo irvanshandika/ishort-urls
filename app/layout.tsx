@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
 import { Sora } from "next/font/google";
 import "./globals.css";
 import { NextUIProvider } from "@nextui-org/react";
+import type { Metadata } from "next";
 
 const sora = Sora({ subsets: ["latin"] });
 
@@ -19,6 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={sora.className}>
         <NextUIProvider>{children}</NextUIProvider>
+        <script async src="https://kit.fontawesome.com/c7e6574aa8.js" crossOrigin="anonymous"></script>
       </body>
     </html>
   );
