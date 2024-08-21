@@ -1,48 +1,81 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button } from "@nextui-org/react";
 import Link from "next/link";
+import { auth, db } from "@/src/config/FirebaseConfig";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 import GoogleIcon from "@/src/components/icons/GoogleIcon";
-import { app, auth } from "@/src/config/FirebaseConfig";
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 
 function SignInPage() {
-  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
   const router = useRouter();
 
-  const signInWithGoogle = async () => {
-    setLoading(true);
-    const authInstance = getAuth(app);
-    const provider = new GoogleAuthProvider();
+  const handleSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     try {
-      const result = await signInWithPopup(authInstance, provider);
-      const user = result.user;
-      // Check if the user is in the Firebase auth table
-      if (user) {
-        router.push("/");
-      } else {
-        authInstance.signOut();
+      // Login dengan email dan password
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Periksa apakah user sudah terdaftar di Firestore berdasarkan uid
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+
+      if (!userDoc.exists()) {
+        setAlertMessage(`Maaf, akun dengan ${email} belum terdaftar di Firestore. Harap melakukan sign up.`);
+        return;
       }
+
+      // Jika berhasil, navigasi ke halaman utama
+      router.push("/");
     } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
+      console.error("Error signing in:", error);
+      setAlertMessage("Email atau password salah. Silakan coba lagi.");
     }
   };
+
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      // Periksa apakah user sudah terdaftar di Firestore berdasarkan uid
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+
+      if (!userDoc.exists()) {
+        setAlertMessage(`Maaf, akun dengan ${user.email} belum terdaftar di Firestore. Harap melakukan sign up.`);
+        return;
+      }
+
+      // Jika berhasil, navigasi ke halaman utama
+      router.push("/");
+    } catch (error) {
+      console.error("Error signing in with Google:", error);
+      setAlertMessage("Terjadi kesalahan saat login dengan Google. Silakan coba lagi.");
+    }
+  };
+
   return (
     <>
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+        {alertMessage && <div className="fixed top-5 bg-red-500 text-white p-4 rounded-lg shadow-lg">{alertMessage}</div>}
         <div className="flex flex-col bg-white shadow-md px-4 sm:px-6 md:px-8 lg:px-10 py-8 rounded-3xl w-50 max-w-md">
           <h1 className="font-medium self-center text-xl sm:text-3xl text-gray-800">Sign In</h1>
           <p className="mt-4 self-center text-xl sm:text-sm text-gray-800">Sign in to your account to access all features</p>
 
           <div className="mt-10">
-            <form action="/">
+            <form onSubmit={handleSignIn}>
               <div className="flex flex-col mb-5">
-                <label htmlFor="email_user" className="mb-1 text-xs tracking-wide text-gray-600">
+                <label htmlFor="email" className="mb-1 text-xs tracking-wide text-gray-600">
                   E-Mail Address:
                 </label>
                 <div className="relative">
@@ -50,9 +83,11 @@ function SignInPage() {
                     <i aria-hidden className="fas fa-at text-blue-500"></i>
                   </div>
                   <input
-                    id="email_user"
+                    id="email"
                     type="email"
                     name="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className=" text-sm placeholder-gray-500 pl-10 pr-4 rounded-2xl border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
                     placeholder="Enter your email"
                   />
@@ -73,6 +108,8 @@ function SignInPage() {
                     id="password"
                     type="password"
                     name="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     className="text-sm placeholder-gray-500 pl-10 pr-4 rounded-2xl border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
                     placeholder="Enter your password"
                   />
@@ -98,8 +135,8 @@ function SignInPage() {
                 <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-2/3">Or sign In With</div>
               </div>
               <div className="flex justify-center items-center mt-4">
-                <Button variant="bordered" onClick={signInWithGoogle}>
-                  <span className="ml-4">{loading ? "Loading..." : "Continue In with Google"}</span>
+                <Button variant="bordered" onClick={handleGoogleSignIn}>
+                  <span className="ml-4">Continue with Google</span>
                   <div className="bg-white p-2 rounded-full">
                     <GoogleIcon />
                   </div>

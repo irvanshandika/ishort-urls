@@ -1,9 +1,14 @@
 "use client";
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button } from "@nextui-org/react";
+import { app } from "@/src/config/FirebaseConfig";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import DropdownProfile from "@/src/components/DropDownProfile";
 
 export default function NavigasiBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const auth = getAuth(app);
 
   const menuItems = [
     {
@@ -11,6 +16,17 @@ export default function NavigasiBar() {
       href: "/",
     },
   ];
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+    return () => unsubscribe();
+  }, [auth]);
 
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen}>
@@ -31,14 +47,22 @@ export default function NavigasiBar() {
         ))}
       </NavbarContent>
       <NavbarContent justify="end">
-        <NavbarItem className="flex">
-          <Link href="/auth/signin">Login</Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
-            Sign Up
-          </Button>
-        </NavbarItem>
+        {user ? (
+          <>
+            <DropdownProfile />
+          </>
+        ) : (
+          <>
+            <NavbarItem className="flex">
+              <Link href="/auth/signin">Login</Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Button as={Link} color="primary" href="/auth/signup" variant="flat">
+                Sign Up
+              </Button>
+            </NavbarItem>
+          </>
+        )}
       </NavbarContent>
       <NavbarMenu>
         {menuItems.map((item, index) => (
