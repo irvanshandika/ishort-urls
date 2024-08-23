@@ -4,6 +4,8 @@ import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, Navba
 import { app } from "@/src/config/FirebaseConfig";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import DropdownProfile from "@/src/components/DropDownProfile";
+import Logo from "@/src/components/images/Logo.webp";
+import Image from "next/image";
 
 export default function NavigasiBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,6 +16,14 @@ export default function NavigasiBar() {
     {
       label: "Home",
       href: "/",
+    },
+    {
+      label: "About",
+      href: "/about",
+    },
+    {
+      label: "Contact",
+      href: "/contact",
     },
   ];
 
@@ -33,7 +43,9 @@ export default function NavigasiBar() {
       <NavbarContent>
         <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} className="sm:hidden" />
         <NavbarBrand>
-          <p className="font-bold text-inherit">iShort URLs</p>
+          <Link href="/">
+            <Image src={Logo} alt="Logo Brand" className="w-[100px] h-[100px]" width={32} height={32} />
+          </Link>
         </NavbarBrand>
       </NavbarContent>
 

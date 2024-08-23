@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 const sora = Sora({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "iShort URLs - Pendekkan URL-mu dengan mudah",
+  title: "Pendekkan URL mu dengan mudah - iShort URLs",
   description: "Pendekkan URL-mu dengan mudah menggunakan iShort URLs",
 };
 

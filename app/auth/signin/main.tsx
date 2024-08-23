@@ -8,6 +8,8 @@ import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 
 import { doc, getDoc } from "firebase/firestore";
 import GoogleIcon from "@/src/components/icons/GoogleIcon";
 import { useRouter } from "next/navigation";
+import Logo from "@/src/components/images/Logo.webp";
+import Image from "next/image";
 
 function SignInPage() {
   const [email, setEmail] = useState("");
@@ -19,20 +21,17 @@ function SignInPage() {
     e.preventDefault();
 
     try {
-      // Login dengan email dan password
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Periksa apakah user sudah terdaftar di Firestore berdasarkan uid
       const userDocRef = doc(db, "users", user.uid);
       const userDoc = await getDoc(userDocRef);
 
       if (!userDoc.exists()) {
-        setAlertMessage(`Maaf, akun dengan ${email} belum terdaftar di Firestore. Harap melakukan sign up.`);
+        setAlertMessage(`Maaf, akun dengan ${email} belum terdaftar. Harap melakukan sign up.`);
         return;
       }
 
-      // Jika berhasil, navigasi ke halaman utama
       router.push("/");
     } catch (error) {
       console.error("Error signing in:", error);
@@ -47,16 +46,14 @@ function SignInPage() {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // Periksa apakah user sudah terdaftar di Firestore berdasarkan uid
       const userDocRef = doc(db, "users", user.uid);
       const userDoc = await getDoc(userDocRef);
 
       if (!userDoc.exists()) {
-        setAlertMessage(`Maaf, akun dengan ${user.email} belum terdaftar di Firestore. Harap melakukan sign up.`);
+        setAlertMessage(`Maaf, akun dengan ${user.email} belum terdaftar. Harap melakukan sign up.`);
         return;
       }
 
-      // Jika berhasil, navigasi ke halaman utama
       router.push("/");
     } catch (error) {
       console.error("Error signing in with Google:", error);
@@ -70,6 +67,9 @@ function SignInPage() {
         {alertMessage && <div className="fixed top-5 bg-red-500 text-white p-4 rounded-lg shadow-lg">{alertMessage}</div>}
         <div className="flex flex-col bg-white shadow-md px-4 sm:px-6 md:px-8 lg:px-10 py-8 rounded-3xl w-50 max-w-md">
           <h1 className="font-medium self-center text-xl sm:text-3xl text-gray-800">Sign In</h1>
+          <Link href="/" className="flex justify-center items-center">
+            <Image src={Logo} alt="Logo" width={100} height={100} />
+          </Link>
           <p className="mt-4 self-center text-xl sm:text-sm text-gray-800">Sign in to your account to access all features</p>
 
           <div className="mt-10">
@@ -90,6 +90,7 @@ function SignInPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     className=" text-sm placeholder-gray-500 pl-10 pr-4 rounded-2xl border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
                     placeholder="Enter your email"
+                    required
                   />
                 </div>
               </div>
@@ -112,6 +113,7 @@ function SignInPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     className="text-sm placeholder-gray-500 pl-10 pr-4 rounded-2xl border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
                     placeholder="Enter your password"
+                    required
                   />
                 </div>
                 <div className="flex justify-end items-end mt-6">

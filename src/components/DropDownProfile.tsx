@@ -6,7 +6,6 @@ import { getAuth, signOut } from "firebase/auth";
 import UserIcon from "./icons/UserIcon";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 
 export default function DropdownProfile() {
   const [user, setUser] = useState<any>(null);
@@ -36,10 +35,16 @@ export default function DropdownProfile() {
   return (
     <Dropdown>
       <DropdownTrigger>
-        <button>{user && user.photoURL ? <Image src={user.photoURL} alt="Profile Picture" className="lg:size-11 size-11 rounded-full ml-2" width={44} height={44} /> : <UserIcon />}</button>
+        <button>{user && user.photoURL ? <Image src={user.photoURL} alt="Profile Picture" className="lg:size-11 size-11 rounded-full ml-2" width={44} height={44} /> : <UserIcon className="w-10 h-10" />}</button>
       </DropdownTrigger>
       <DropdownMenu aria-label="Static Actions">
-        <DropdownItem key="dashboard">Dashboard</DropdownItem>
+        <DropdownItem key="profile" className="h-14 gap-2">
+          <p className="font-semibold">Signed in as</p>
+          <p className="font-semibold">{user && user.email}</p>
+        </DropdownItem>
+        <DropdownItem key="dashboard" onClick={() => router.push("/dashboard")}>
+          Dashboard
+        </DropdownItem>
         <DropdownItem key="signout" className="text-danger" color="danger" onClick={handleLogout}>
           Sign Out
           <span className="ml-2">
