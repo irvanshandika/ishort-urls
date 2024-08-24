@@ -1,11 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar } from "@nextui-org/react";
 import { app } from "@/src/config/FirebaseConfig";
 import { getAuth, signOut } from "firebase/auth";
 import UserIcon from "./icons/UserIcon";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 
 export default function DropdownProfile() {
   const [user, setUser] = useState<any>(null);
@@ -35,7 +34,7 @@ export default function DropdownProfile() {
   return (
     <Dropdown>
       <DropdownTrigger>
-        <button>{user && user.photoURL ? <Image src={user.photoURL} alt="Profile Picture" className="lg:size-11 size-11 rounded-full ml-2" width={44} height={44} /> : <UserIcon className="w-10 h-10" />}</button>
+        <button>{user && user.photoURL ? <Avatar src={user.photoURL} className="w-10 h-10 text-large" /> : <UserIcon className="w-10 h-10" />}</button>
       </DropdownTrigger>
       <DropdownMenu aria-label="Static Actions">
         <DropdownItem key="profile" className="h-14 gap-2">
