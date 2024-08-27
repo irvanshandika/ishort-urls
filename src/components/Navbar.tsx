@@ -44,7 +44,7 @@ export default function NavigasiBar() {
         <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} className="sm:hidden" />
         <NavbarBrand>
           <Link href="/">
-            <Image src={Logo} alt="Logo Brand" className="w-[100px] h-[100px]" width={32} height={32} />
+            <Image src={Logo} alt="Logo Brand" className="lg:w-[100px] lg:h-[100px] size-20" width={32} height={32} />
           </Link>
         </NavbarBrand>
       </NavbarContent>

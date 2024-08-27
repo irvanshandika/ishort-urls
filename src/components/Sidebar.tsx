@@ -26,16 +26,6 @@ export default function SideBar({ children }: { children: React.ReactNode }) {
       href: "#",
       icon: <ProfileUser className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
     },
-    {
-      label: "Settings",
-      href: "#",
-      icon: <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
-    },
-    {
-      label: "Logout",
-      href: "#",
-      icon: <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
-    },
   ];
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
@@ -72,6 +62,13 @@ export default function SideBar({ children }: { children: React.ReactNode }) {
               {links.map((link, idx) => (
                 <SidebarLink key={idx} link={link} />
               ))}
+              <SidebarLink
+                link={{
+                  label: "Logout",
+                  href: "#",
+                  icon: <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
+                }}
+              />
             </div>
           </div>
           <div>
@@ -107,7 +104,7 @@ export default function SideBar({ children }: { children: React.ReactNode }) {
 }
 export const Logo = () => {
   return (
-    <Link href="#" className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20">
+    <Link href="/" className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20">
       <Image src={BrandLogo} alt="Brand Logo" width={100} height={100} className="h-[50px] w-[50px] flex-shrink-0" />
       <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="font-medium text-black dark:text-white whitespace-pre">
         iShort URLs
@@ -117,7 +114,7 @@ export const Logo = () => {
 };
 export const LogoIcon = () => {
   return (
-    <Link href="#" className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20">
+    <Link href="/" className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20">
       <Image src={BrandLogo} alt="Brand Logo" width={100} height={100} className="h-7 w-7 flex-shrink-0" />
     </Link>
   );
