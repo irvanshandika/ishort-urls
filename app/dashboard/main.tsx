@@ -32,7 +32,7 @@ const Dashboard: React.FC = () => {
   return (
     <>
       <SideBar>
-        <div className="bg-gray-100 min-h-screen flex flex-col items-center p-8">
+        <div className="min-h-screen flex flex-col items-center p-8">
           <ShortUrlsList />
         </div>
       </SideBar>

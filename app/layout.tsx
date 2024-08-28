@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={sora.className}>
+      <body className={`${sora.className} bg-gradient-to-r from-blue-500 to-sky-300`}>
         <NextUIProvider>{children}</NextUIProvider>
         <script async src="https://kit.fontawesome.com/c7e6574aa8.js" crossOrigin="anonymous"></script>
       </body>

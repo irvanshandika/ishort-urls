@@ -14,6 +14,7 @@ export default function InputUrls() {
   const [loading, setLoading] = useState(false);
   const [user] = useAuthState(auth);
 
+
   const handleSubmit = async () => {
     if (!title || !longUrl || !shortUrl || !user) return;
 
@@ -35,6 +36,7 @@ export default function InputUrls() {
         setLongUrl("");
         setShortUrl("");
         onOpenChange();
+        window.location.reload();
       }, 3000);
     } catch (error) {
       console.error("Error adding document: ", error);

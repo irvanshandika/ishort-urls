@@ -5,14 +5,13 @@ import Illustration from "@/src/components/images/Illustration.webp";
 
 function HeroSection() {
   return (
-    <section className="bg-gradient-to-r from-blue-500 to-sky-300 text-white py-20">
+    <section className="text-white py-20">
       <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
-        {/* Left Section - Headline and Description */}
         <div className="md:w-1/2 flex flex-col items-start">
           <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
-            Sederhanakan Tautan Anda Dengan <span className="text-yellow-300">iShort URLs</span>
+            Simplify Your Links with <span className="text-yellow-300">iShort URLs</span>
           </h1>
-          <p className="text-lg md:text-xl mb-6">Bosan dengan URL yang panjang dan membingungkan? Dengan URL iShort, Anda dapat dengan mudah memendekkan tautan Anda untuk tampilan yang bersih dan ringkas.</p>
+          <p className="text-lg md:text-xl mb-6">Tired of long and confusing URLs? With iShort URLs, you can easily shorten your links for a clean and concise look.</p>
           <form className="w-full max-w-md flex items-center mb-6">
             <input type="text" placeholder="Paste your long URL here" className="w-full py-[7px] px-4 rounded-lg text-gray-800 border border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-300" />
             <Button className="bg-yellow-300 text-gray-900 font-semibold ml-3 rounded-lg hover:bg-yellow-400 transition duration-300 ease-in-out">Shorten URL</Button>

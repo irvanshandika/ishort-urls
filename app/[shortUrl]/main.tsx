@@ -1,8 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, updateDoc, doc } from "firebase/firestore";
 import { db } from "@/src/config/FirebaseConfig";
+import Image from "next/image";
+import FingerprintJS from "@fingerprintjs/fingerprintjs";
 
 interface RedirectPageProps {
   params: { shortUrl: string };
@@ -25,10 +27,28 @@ export default function RedirectPage({ params }: RedirectPageProps) {
           return;
         }
 
-        const doc = querySnapshot.docs[0].data();
-        setLongUrl(doc.longUrl);
+        const docData = querySnapshot.docs[0].data();
+        setLongUrl(docData.longUrl);
+
+        if (process.env.NODE_ENV === "production") {
+          trackVisitor(querySnapshot.docs[0].id, docData.visitors || []);
+        }
       } catch (err) {
         setError("Failed to fetch the long URL from the database");
+      }
+    };
+
+    const trackVisitor = async (docId: string, existingVisitors: string[]) => {
+      const fp = await FingerprintJS.load();
+      const result = await fp.get();
+      const visitorId = result.visitorId;
+
+      if (!existingVisitors.includes(visitorId)) {
+        existingVisitors.push(visitorId);
+        await updateDoc(doc(db, "shorturls", docId), {
+          visitors: existingVisitors,
+          visitorCount: existingVisitors.length,
+        });
       }
     };
 
@@ -43,7 +63,7 @@ export default function RedirectPage({ params }: RedirectPageProps) {
 
       const redirectTimer = setTimeout(() => {
         router.push(longUrl);
-      }, 3000); // Redirect after 3 seconds
+      }, 3000);
 
       return () => {
         clearInterval(timer);
@@ -54,10 +74,6 @@ export default function RedirectPage({ params }: RedirectPageProps) {
 
   if (error) {
     return <div>{error}</div>;
-  }
-
-  if (!longUrl) {
-    return <div>Loading...</div>;
   }
 
   return (
