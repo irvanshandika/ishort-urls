@@ -8,6 +8,13 @@ const sora = Sora({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Pendekkan URL mu dengan mudah - iShort URLs",
   description: "Pendekkan URL-mu dengan mudah menggunakan iShort URLs",
+  keywords: "Short Url",
+  openGraph: {
+    title: "Pendekkan URL mu dengan mudah - iShort URLs",
+    description: "Pendekkan URL-mu dengan mudah menggunakan iShort URLs",
+    url: "https://ishort.my.id",
+    type: "website",
+  }
 };
 
 export default function RootLayout({
@@ -17,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${sora.className} bg-gradient-to-r from-blue-500 to-sky-300`}>
+      <body className={`${sora.className}`}>
         <NextUIProvider>{children}</NextUIProvider>
         <script async src="https://kit.fontawesome.com/c7e6574aa8.js" crossOrigin="anonymous"></script>
       </body>

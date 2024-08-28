@@ -23,7 +23,7 @@ export default function SideBar({ children }: { children: React.ReactNode }) {
     },
     {
       label: "Profile",
-      href: "#",
+      href: "/profile",
       icon: <ProfileUser className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
     },
   ];

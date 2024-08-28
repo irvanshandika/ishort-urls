@@ -5,6 +5,7 @@ import { collection, query, where, getDocs, updateDoc, doc } from "firebase/fire
 import { db } from "@/src/config/FirebaseConfig";
 import Image from "next/image";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
+import Link from "next/link";
 
 interface RedirectPageProps {
   params: { shortUrl: string };
@@ -73,15 +74,33 @@ export default function RedirectPage({ params }: RedirectPageProps) {
   }, [longUrl, router]);
 
   if (error) {
-    return <div>{error}</div>;
+    return (
+      <>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+          <Image
+            src="https://cdn3d.iconscout.com/3d/free/thumb/free-404-error-3d-illustration-download-in-png-blend-fbx-gltf-file-formats--alert-warning-no-results-found-empty-state-pack-seo-web-illustrations-2969402.png?f=webp" // Replace this with a relevant error image
+            alt="Error"
+            width={300}
+            height={300}
+          />
+          <h1 className="text-3xl font-bold text-red-600 mb-4">Error</h1>
+          <p className="text-lg text-gray-700 mb-4">{error}</p>
+          <Link href="/">
+            <span className="text-blue-500 underline">Go back to the homepage</span>
+          </Link>
+        </div>
+      </>
+    );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h1 className="text-3xl font-bold mb-4">Redirecting...</h1>
-      <p className="text-lg mb-2">You will be redirected to:</p>
-      <p className="text-blue-500 text-lg underline mb-4">{longUrl}</p>
-      <p className="text-gray-600">in {countdown} seconds...</p>
-    </div>
+    <>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+        <h1 className="text-3xl font-bold mb-4">Redirecting...</h1>
+        <p className="text-lg mb-2">You will be redirected to:</p>
+        <p className="text-blue-500 text-lg underline mb-4">{longUrl}</p>
+        <p className="text-gray-600">in {countdown} seconds...</p>
+      </div>
+    </>
   );
 }

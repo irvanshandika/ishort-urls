@@ -1,6 +1,7 @@
 import React from "react";
 import AboutPage from "./main";
 import NavigasiBar from "@/src/components/Navbar";
+import Footer from "@/src/components/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,6 +13,7 @@ function About() {
     <>
       <NavigasiBar />
       <AboutPage />
+      <Footer />
     </>
   );
 }

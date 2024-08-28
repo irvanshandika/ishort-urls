@@ -1,5 +1,6 @@
 import React from "react";
 import NavigasiBar from "@/src/components/Navbar";
+import Footer from "@/src/components/Footer";
 import Image from "next/image";
 import Link from "next/link";
 import Illustration from "@/src/components/images/404.webp";
@@ -16,6 +17,7 @@ function NotFound() {
           Back to Homepage
         </Link>
       </div>
+      <Footer />
     </>
   );
 }

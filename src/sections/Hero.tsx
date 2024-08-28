@@ -5,7 +5,7 @@ import Illustration from "@/src/components/images/Illustration.webp";
 
 function HeroSection() {
   return (
-    <section className="text-white py-20">
+    <section className="pt-20">
       <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
         <div className="md:w-1/2 flex flex-col items-start">
           <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">

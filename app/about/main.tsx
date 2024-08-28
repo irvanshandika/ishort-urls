@@ -4,7 +4,7 @@ import Image from "next/image";
 function AboutPage() {
   return (
     <>
-      <div className="min-h-screen flex flex-col items-center p-8">
+      <div className="flex flex-col items-center p-8">
         <div className="bg-white shadow-lg rounded-lg p-6 max-w-4xl w-full">
           <div className="text-center mb-6">
             <h1 className="text-4xl font-bold text-gray-800">About Us</h1>

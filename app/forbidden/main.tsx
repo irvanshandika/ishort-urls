@@ -4,6 +4,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import NavigasiBar from "@/src/components/Navbar";
+import Footer from "@/src/components/Footer";
 import ForbiddenIllustration from "@/src/components/images/Forbidden.webp";
 import Image from "next/image";
 
@@ -40,6 +41,7 @@ function Forbidden() {
           Redirecting to sign-in page in <span className="font-bold">{countdown}</span> seconds...
         </p>
       </div>
+      <Footer />
     </>
   );
 }
