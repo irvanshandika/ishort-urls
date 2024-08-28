@@ -16,7 +16,7 @@ interface ShortUrl {
   title?: string;
   shortUrl?: string;
   createdAt?: { seconds: number };
-  visitors?: number;
+  visitorCount?: number;
 }
 
 function ShortUrlsList() {
@@ -38,7 +38,7 @@ function ShortUrlsList() {
 
         setShortUrls(urls);
         setTotalShortUrls(urls.length);
-        setTotalVisitors(urls.reduce((acc, url) => acc + (url.visitors || 0), 0));
+        setTotalVisitors(urls.reduce((acc, url) => acc + (url.visitorCount || 0), 0));
       }
     };
 
@@ -115,7 +115,7 @@ function ShortUrlsList() {
                 </p>
               </div>
               <p className="text-gray-600 text-sm">Created: {url.createdAt ? new Date(url.createdAt.seconds * 1000).toLocaleDateString() : "N/A"}</p>
-              <p className="text-gray-600 text-sm">Visitors: {url.visitors || 0}</p>
+              <p className="text-gray-600 text-sm">Visitors: {url.visitorCount || 0}</p>
             </div>
           ))}
         </div>
