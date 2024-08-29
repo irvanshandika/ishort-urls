@@ -5,13 +5,15 @@ import { auth, db } from "@/src/config/FirebaseConfig";
 import { collection, query, where, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import InputUrls from "@/src/ServerComponents/dashboard/InputUrls";
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, cn, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, cn, useDisclosure } from "@nextui-org/react";
 import { CopyDocumentIcon } from "@/src/components/icons/CopyDocumentIcon";
 import { EditDocumentIcon } from "@/src/components/icons/EditDocumentIcon";
 import { DeleteDocumentIcon } from "@/src/components/icons/DeleteDocumentIcon";
-import Image from "next/image";
+import ModalDelete from "@/src/ServerComponents/dashboard/ModalDelete";
+import ModalUpdate from "@/src/ServerComponents/dashboard/ModalUpdate";
 
 interface ShortUrl {
+  longUrl: string;
   id: string;
   title?: string;
   shortUrl?: string;
@@ -26,6 +28,14 @@ function ShortUrlsList() {
   const [totalShortUrls, setTotalShortUrls] = useState<number>(0);
   const [totalVisitors, setTotalVisitors] = useState<number>(0);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [selectedUrlId, setSelectedUrlId] = useState<string | null>(null);
+  const [isUpdateOpen, setIsUpdateOpen] = useState(false);
+  const [selectedUrl, setSelectedUrl] = useState<ShortUrl | null>(null);
+
+  const openUpdateModal = (url: ShortUrl) => {
+    setSelectedUrl(url);
+    setIsUpdateOpen(true);
+  };
 
   const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";
 
@@ -54,14 +64,16 @@ function ShortUrlsList() {
     setTimeout(() => setCopiedIndex(null), 2000);
   };
 
-  const handleDelete = async (id: string) => {
-    try {
-      await deleteDoc(doc(db, "shorturls", id));
-      setShortUrls(shortUrls.filter((url) => url.id !== id));
-
-      window.location.reload();
-    } catch (error) {
-      console.error("Error deleting URL: ", error);
+  const handleDelete = async () => {
+    if (selectedUrlId) {
+      try {
+        await deleteDoc(doc(db, "shorturls", selectedUrlId));
+        setShortUrls(shortUrls.filter((url) => url.id !== selectedUrlId));
+        onOpenChange();
+        window.location.reload();
+      } catch (error) {
+        console.error("Error deleting URL: ", error);
+      }
     }
   };
 
@@ -100,10 +112,19 @@ function ShortUrlsList() {
                     <DropdownItem onClick={() => handleCopy(url.shortUrl || "", index)} key="copy" description="Copy the file link" startContent={<CopyDocumentIcon className={iconClasses} />}>
                       {copiedIndex === index ? "Copied!" : "Copy"}
                     </DropdownItem>
-                    <DropdownItem key="edit" showDivider description="Allows you to edit the file" startContent={<EditDocumentIcon className={iconClasses} />}>
+                    <DropdownItem key="edit" showDivider description="Allows you to edit the file" startContent={<EditDocumentIcon className={iconClasses} />} onPress={() => openUpdateModal(url)}>
                       Edit file
                     </DropdownItem>
-                    <DropdownItem key="delete" className="text-danger" color="danger" description="Permanently delete the file" startContent={<DeleteDocumentIcon className={cn(iconClasses, "text-danger")} />} onPress={onOpen}>
+                    <DropdownItem
+                      key="delete"
+                      className="text-danger"
+                      color="danger"
+                      description="Permanently delete the file"
+                      startContent={<DeleteDocumentIcon className={cn(iconClasses, "text-danger")} />}
+                      onPress={() => {
+                        onOpen();
+                        setSelectedUrlId(url.id);
+                      }}>
                       Delete URL
                     </DropdownItem>
                   </DropdownMenu>
@@ -121,39 +142,10 @@ function ShortUrlsList() {
         </div>
       </div>
 
-      {/* Modal */}
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">Delete URL</ModalHeader>
-              <ModalBody>
-                <div className="flex justify-center items-center">
-                  <Image
-                    src="https://cdn3d.iconscout.com/3d/free/thumb/free-alert-folder-3d-icon-download-in-png-blend-fbx-gltf-file-formats--warning-caution-folders-pack-files-icons-5700814.png?f=webp"
-                    alt="Warning"
-                    width={100}
-                    height={100}
-                  />
-                </div>
-                <h3 className="text-center">This URL will be removed from iShort permanently.</h3>
-                <p className="text-center">
-                  Enter the word "<strong>confirm</strong>" in the input below, if you agree.
-                </p>
-                <Input isRequired type="text" label="Confirmation" placeholder="Enter confirmation word" variant="bordered" required />
-              </ModalBody>
-              <ModalFooter>
-                <Button color="default" variant="light" onPress={onClose}>
-                  Close
-                </Button>
-                <Button color="danger" onPress={() => handleDelete(shortUrls.find((url) => url.id)!.id)}>
-                  Delete
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+      <ModalDelete isOpen={isOpen} onOpenChange={onOpenChange} handleDelete={handleDelete} />
+      {isUpdateOpen && selectedUrl && (
+        <ModalUpdate urlId={selectedUrl.id} currentTitle={selectedUrl.title || ""} currentLongUrl={selectedUrl.longUrl || ""} currentShortUrl={selectedUrl.shortUrl || ""} onClose={() => setIsUpdateOpen(false)} />
+      )}
     </>
   );
 }

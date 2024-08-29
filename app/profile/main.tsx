@@ -73,7 +73,7 @@ function ProfilePage() {
         setSuccessMessage("Profile updated successfully.");
         setTimeout(() => {
           setSuccessMessage("");
-          router.refresh(); // Refresh to display updated profile
+          window.location.reload();
         }, 3000);
       } catch (err) {
         setErrorMessage("Error updating profile. Please try again.");

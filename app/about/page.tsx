@@ -5,7 +5,7 @@ import Footer from "@/src/components/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Tentang Kami | iShort URLs",
+  title: "About | iShort URLs",
 };
 
 function About() {
