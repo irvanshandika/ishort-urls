@@ -8,13 +8,15 @@ const sora = Sora({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Shorten Your URL Easily - iShort URLs",
-  description: "Pendekkan URL-mu dengan mudah menggunakan iShort URLs",
+  description: "Shorten Your URLs Easily With iShort URLs",
   keywords: "Short Url",
   openGraph: {
     title: "Shorten Your URL Easily - iShort URLs",
-    description: "Pendekkan URL-mu dengan mudah menggunakan iShort URLs",
+    description: "Shorten Your URLs Easily With iShort URLs",
     url: "https://ishort.my.id",
     type: "website",
+    images:
+      "https://ogcdn.net/e4b8c678-7bd5-445d-ba03-bfaad510c686/v4/ishort.my.id/Shorten%20Your%20URL%20Easily%20-%20iShort%20URLs/https%3A%2F%2Fopengraph.b-cdn.net%2Fproduction%2Fimages%2F56188dc2-e3c3-4ce5-a8b1-1323953e37b9.jpg%3Ftoken%3DhOY-wLL-tV2Wb6eqlpzb3hUOqYMZbXQ3az2flBDqaSs%26height%3D800%26width%3D1200%26expires%3D33251249770/og.png",
   },
 };
 
@@ -25,6 +27,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="twitter:domain" content="ishort.my.id" />
+        <meta property="twitter:url" content="https://ishort.my.id" />
+        <meta name="twitter:title" content="Shorten Your URL Easily - iShort URLs" />
+        <meta name="twitter:description" content="Shorten Your URLs Easily With iShort URLs" />
+
+        <meta
+          name="twitter:image"
+          content="https://ogcdn.net/e4b8c678-7bd5-445d-ba03-bfaad510c686/v4/ishort.my.id/Shorten%20Your%20URL%20Easily%20-%20iShort%20URLs/https%3A%2F%2Fopengraph.b-cdn.net%2Fproduction%2Fimages%2F56188dc2-e3c3-4ce5-a8b1-1323953e37b9.jpg%3Ftoken%3DhOY-wLL-tV2Wb6eqlpzb3hUOqYMZbXQ3az2flBDqaSs%26height%3D800%26width%3D1200%26expires%3D33251249770/og.png"
+        />
+      </head>
       <body className={`${sora.className} bg-gray-100`}>
         <NextUIProvider>{children}</NextUIProvider>
         <script async src="https://kit.fontawesome.com/c7e6574aa8.js" crossOrigin="anonymous"></script>
