@@ -15,8 +15,14 @@ function Footer() {
             </span>
             <div className="flex flex-col items-center gap-6 mb-8">
               <div className="flex flex-wrap items-center justify-center gap-5 lg:gap-12 gap-y-3 lg:flex-nowrap text-dark-grey-900">
+                <Link href="/" className="text-gray-600 hover:text-gray-900">
+                  Home
+                </Link>
                 <Link href="/about" className="text-gray-600 hover:text-gray-900">
                   About
+                </Link>
+                <Link href="/about" className="text-gray-600 hover:text-gray-900">
+                  Contact
                 </Link>
               </div>
               <div className="flex items-center gap-8">

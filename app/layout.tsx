@@ -9,7 +9,7 @@ const sora = Sora({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Shorten Your URL Easily - iShort URLs",
   description: "Shorten Your URLs Easily With iShort URLs",
-  keywords: "Short Url",
+  keywords: "Short Url, iShort URLs, Shorten URL, URL Shortener",
   openGraph: {
     title: "Shorten Your URL Easily - iShort URLs",
     description: "Shorten Your URLs Easily With iShort URLs",

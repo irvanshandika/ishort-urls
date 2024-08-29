@@ -100,7 +100,8 @@ function HeroSection() {
               type="text"
               value={customShortUrl}
               onChange={(e) => setCustomShortUrl(e.target.value)}
-              placeholder="Custom short URL (optional)"
+              placeholder="Custom short URL"
+              required
               className="w-full py-[7px] px-4 my-3 rounded-lg text-gray-800 border border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-300"
             />
             <Button className="bg-yellow-300 text-gray-900 font-semibold ml-3 rounded-lg hover:bg-yellow-400 transition duration-300 ease-in-out" type="submit" disabled={isLoading}>

@@ -96,7 +96,7 @@ export default function SideBar({ children }: { children: React.ReactNode }) {
           </div>
         </SidebarBody>
         <div className="flex flex-1">
-          <div className="p-2 md:p-10 rounded-tl-2xl flex flex-col gap-2 flex-1 w-full h-full">{children}</div>
+          <div className="p-2 md:p-10 rounded-tl-2xl flex flex-col gap-2 flex-1 w-full h-full overflow-y-auto">{children}</div>
         </div>
       </Sidebar>
     </div>
