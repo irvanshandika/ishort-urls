@@ -37,7 +37,7 @@ function SignUpForm() {
         password: hashedPassword,
       });
 
-      setAlertMessage("Akun Anda Berhasil Sign Up");
+      setAlertMessage("Success: Your account has been successfully registered");
       setShowAlert(true);
       setTimeout(() => {
         router.push("/auth/signin");
@@ -61,7 +61,7 @@ function SignUpForm() {
         password: null,
       });
 
-      setAlertMessage("Akun Anda Berhasil Sign Up");
+      setAlertMessage("Success: Your account has been successfully registered");
       setShowAlert(true);
       setTimeout(() => {
         router.push("/auth/signin");
@@ -81,7 +81,11 @@ function SignUpForm() {
         </Link>
         <p className="mt-4 self-center text-xl sm:text-sm text-gray-800">Sign up your account for unlimited access to all features</p>
         <div className="mt-10">
-          {showAlert && <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white py-2 px-4 rounded">{alertMessage}</div>}
+          {showAlert && (
+            <>
+              <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white py-2 px-4 rounded">{alertMessage}</div>
+            </>
+          )}
           <form onSubmit={handleSignUp}>
             <div className="flex flex-col mb-5">
               <label htmlFor="name" className="mb-1 text-xs tracking-wide text-gray-600">

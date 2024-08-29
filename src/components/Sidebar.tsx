@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/src/components/ui/sidebar";
-import { IconArrowLeft, IconSettings, IconUserBolt } from "@tabler/icons-react";
+import { IconArrowLeft } from "@tabler/icons-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { cn } from "@/src/lib/utils";
@@ -46,12 +46,13 @@ export default function SideBar({ children }: { children: React.ReactNode }) {
 
   const handleLogout = async () => {
     try {
-      router.push("/");
-      await signOut(auth);
+      await signOut(auth); // Tunggu sampai signOut selesai
+      router.push("/"); // Setelah berhasil logout, arahkan ke halaman utama
     } catch (error: any) {
       console.log("Error signing out: ", error.message);
     }
   };
+
   return (
     <div className={cn("rounded-md flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 flex-1 mx-auto border border-neutral-200 dark:border-neutral-700 overflow-hidden", "h-screen")}>
       <Sidebar open={open} setOpen={setOpen}>
@@ -68,30 +69,27 @@ export default function SideBar({ children }: { children: React.ReactNode }) {
                   href: "#",
                   icon: <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
                 }}
+                onClick={handleLogout}
               />
             </div>
           </div>
           <div>
             {user && user.photoURL ? (
-              <>
-                <SidebarLink
-                  link={{
-                    label: `${user && user.displayName}`,
-                    href: "#",
-                    icon: <Image src={user.photoURL} className="h-7 w-7 flex-shrink-0 rounded-full" width={50} height={50} alt="Avatar" />,
-                  }}
-                />
-              </>
+              <SidebarLink
+                link={{
+                  label: `${user && user.displayName}`,
+                  href: "#",
+                  icon: <Image src={user.photoURL} className="h-7 w-7 flex-shrink-0 rounded-full" width={50} height={50} alt="Avatar" />,
+                }}
+              />
             ) : (
-              <>
-                <SidebarLink
-                  link={{
-                    label: `${user && user.displayName}`,
-                    href: "#",
-                    icon: <UserIcon className="h-7 w-7 flex-shrink-0 rounded-full" />,
-                  }}
-                />
-              </>
+              <SidebarLink
+                link={{
+                  label: `${user && user.displayName}`,
+                  href: "#",
+                  icon: <UserIcon className="h-7 w-7 flex-shrink-0 rounded-full" />,
+                }}
+              />
             )}
           </div>
         </SidebarBody>
@@ -102,6 +100,7 @@ export default function SideBar({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+
 export const Logo = () => {
   return (
     <Link href="/" className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20">
@@ -112,6 +111,7 @@ export const Logo = () => {
     </Link>
   );
 };
+
 export const LogoIcon = () => {
   return (
     <Link href="/" className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20">

@@ -28,14 +28,14 @@ function SignInPage() {
       const userDoc = await getDoc(userDocRef);
 
       if (!userDoc.exists()) {
-        setAlertMessage(`Maaf, akun dengan ${email} belum terdaftar. Harap melakukan sign up.`);
+        setAlertMessage(`Sorry, the account with email ${email} has not been registered. Please register on the signup page.`);
         return;
       }
 
       router.push("/");
     } catch (error) {
       console.error("Error signing in:", error);
-      setAlertMessage("Email atau password salah. Silakan coba lagi.");
+      setAlertMessage("Incorrect email or password. Please try again.");
     }
   };
 
@@ -50,14 +50,14 @@ function SignInPage() {
       const userDoc = await getDoc(userDocRef);
 
       if (!userDoc.exists()) {
-        setAlertMessage(`Maaf, akun dengan ${user.email} belum terdaftar. Harap melakukan sign up.`);
+        setAlertMessage(`Sorry, the account with email ${user.email} has not been registered. Please register on the signup page.`);
         return;
       }
 
       router.push("/");
     } catch (error) {
       console.error("Error signing in with Google:", error);
-      setAlertMessage("Terjadi kesalahan saat login dengan Google. Silakan coba lagi.");
+      setAlertMessage("An error occurred while logging in with Google. Please try again.");
     }
   };
 

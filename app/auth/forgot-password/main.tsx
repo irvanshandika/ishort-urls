@@ -19,14 +19,14 @@ function ForgotPassword() {
     try {
       await sendPasswordResetEmail(auth, email);
 
-      setAlertMessage(`Url reset password berhasil dikirim ke ${email}`);
+      setAlertMessage(`Password reset URL successfully sent to ${email}`);
 
       setTimeout(() => {
         router.push("/auth/signin");
       }, 4000);
     } catch (error) {
       console.error("Error sending reset email:", error);
-      setAlertMessage("Gagal mengirim email reset password. Silakan coba lagi.");
+      setAlertMessage("Failed to send password reset email. Please try again.");
     }
   };
 
