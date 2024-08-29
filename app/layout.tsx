@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-sync-scripts */
+/* eslint-disable @next/next/no-css-tags */
 import { Sora } from "next/font/google";
 import "./globals.css";
 import { NextUIProvider } from "@nextui-org/react";
