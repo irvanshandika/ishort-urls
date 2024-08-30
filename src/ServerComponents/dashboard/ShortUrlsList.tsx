@@ -11,6 +11,8 @@ import { EditDocumentIcon } from "@/src/components/icons/EditDocumentIcon";
 import { DeleteDocumentIcon } from "@/src/components/icons/DeleteDocumentIcon";
 import ModalDelete from "@/src/ServerComponents/dashboard/ModalDelete";
 import ModalUpdate from "@/src/ServerComponents/dashboard/ModalUpdate";
+import { AnalyticIcon } from "@/src/components/icons/AnalyticIcon";
+import { useRouter } from "next/navigation";
 
 interface ShortUrl {
   longUrl: string;
@@ -31,6 +33,8 @@ function ShortUrlsList() {
   const [selectedUrlId, setSelectedUrlId] = useState<string | null>(null);
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
   const [selectedUrl, setSelectedUrl] = useState<ShortUrl | null>(null);
+
+  const router = useRouter();
 
   const openUpdateModal = (url: ShortUrl) => {
     setSelectedUrl(url);
@@ -84,11 +88,11 @@ function ShortUrlsList() {
         <div className="flex justify-around text-center">
           <div>
             <h3 className="text-xl font-semibold text-blue-600">{totalShortUrls}</h3>
-            <p className="text-gray-600">Total Short URLs</p>
+            <p className="text-gray-600 lg:text-base text-sm">Total Short URLs</p>
           </div>
           <div>
             <h3 className="text-xl font-semibold text-blue-600">{totalVisitors}</h3>
-            <p className="text-gray-600">Total Visitors</p>
+            <p className="text-gray-600 lg:text-base text-sm">Total Visitors</p>
           </div>
         </div>
       </div>
@@ -112,8 +116,11 @@ function ShortUrlsList() {
                     <DropdownItem onClick={() => handleCopy(url.shortUrl || "", index)} key="copy" description="Copy the file link" startContent={<CopyDocumentIcon className={iconClasses} />}>
                       {copiedIndex === index ? "Copied!" : "Copy"}
                     </DropdownItem>
-                    <DropdownItem key="edit" showDivider description="Allows you to edit the file" startContent={<EditDocumentIcon className={iconClasses} />} onPress={() => openUpdateModal(url)}>
+                    <DropdownItem key="edit" description="Allows you to edit the file" startContent={<EditDocumentIcon className={iconClasses} />} onPress={() => openUpdateModal(url)}>
                       Edit file
+                    </DropdownItem>
+                    <DropdownItem key="analytic" showDivider description="Allows you to analyzie url" startContent={<AnalyticIcon className={iconClasses} />} onPress={() => router.push(`/analytics/${url.id}`)}>
+                      Analytic Preview
                     </DropdownItem>
                     <DropdownItem
                       key="delete"

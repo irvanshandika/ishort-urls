@@ -66,6 +66,7 @@ export default function RootLayout({
             `,
           }}
         />
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
       </body>
     </html>
   );
