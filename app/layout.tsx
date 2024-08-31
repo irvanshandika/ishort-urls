@@ -66,6 +66,7 @@ export default function RootLayout({
             `,
           }}
         />
+        <script type="text/javascript" src="https://cdn.trakteer.id/js/embed/trbtn.min.js?date=18-11-2023"></script>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
       </body>
     </html>

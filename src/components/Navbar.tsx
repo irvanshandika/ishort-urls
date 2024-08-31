@@ -7,6 +7,7 @@ import DropdownProfile from "@/src/components/DropDownProfile";
 import Logo from "@/src/components/images/Logo.webp";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import Trakteer from "./Trakteer";
 
 export default function NavigasiBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -54,15 +55,14 @@ export default function NavigasiBar() {
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         {menuItems.map((item, index) => (
           <NavbarItem key={index}>
-            <Link
-              color={index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"}
-              href={item.href}
-              className={pathname === item.href ? "font-bold text-blue-600" : ""}
-            >
+            <Link color={index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"} href={item.href} className={pathname === item.href ? "font-bold text-blue-600" : ""}>
               {item.label}
             </Link>
           </NavbarItem>
         ))}
+        <NavbarItem>
+          <Trakteer />
+        </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
         {user ? (
@@ -83,16 +83,14 @@ export default function NavigasiBar() {
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={index}>
-            <Link
-              color={index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"}
-              className={`w-full ${pathname === item.href ? "font-bold text-blue-600" : ""}`}
-              href={item.href}
-              size="lg"
-            >
+            <Link color={index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"} className={`w-full ${pathname === item.href ? "font-bold text-blue-600" : ""}`} href={item.href} size="lg">
               {item.label}
             </Link>
           </NavbarMenuItem>
         ))}
+        <NavbarItem>
+          <Trakteer />
+        </NavbarItem>
       </NavbarMenu>
     </Navbar>
   );
