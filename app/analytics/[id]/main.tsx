@@ -1,54 +1,58 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { auth, db } from "@/src/config/FirebaseConfig";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { db } from "@/src/config/FirebaseConfig";
+import { collection, query, where, getDocs, orderBy, onSnapshot } from "firebase/firestore";
+import { ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import moment from "moment";
 
 interface ShortUrlData {
-  createdAt: { seconds: number };
+  createdAt: Date;
   visitorCount: number;
 }
 
-const Analytics = () => {
-  const [user] = useAuthState(auth);
-  const [chartData, setChartData] = useState<{ date: string; visitorCount: number }[]>([]);
+const Analytics: React.FC = () => {
+  const [data, setData] = useState<ShortUrlData[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      if (user) {
-        const q = query(collection(db, "shorturls"), where("uid", "==", user.uid));
-        const querySnapshot = await getDocs(q);
+      const q = query(collection(db, "shorturls"), orderBy("createdAt", "asc"));
 
-        const data = querySnapshot.docs.map((doc) => {
-          const urlData = doc.data() as ShortUrlData;
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const formattedData: ShortUrlData[] = snapshot.docs.map((doc) => {
+          const data = doc.data();
           return {
-            date: new Date(urlData.createdAt.seconds * 1000).toLocaleDateString(),
-            visitorCount: urlData.visitorCount || 0,
+            createdAt: data.createdAt.toDate(),
+            visitorCount: data.visitorCount || 0,
           };
         });
+        setData(formattedData);
+      });
 
-        setChartData(data);
-      }
+      return () => unsubscribe();
     };
 
     fetchData();
-  }, [user]);
+  }, []);
+
+  const chartData = data.map((item) => ({
+    name: moment(item.createdAt).format("YYYY-MM-DD"),
+    visitorCount: item.visitorCount,
+  }));
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-8">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">URL Analytics</h1>
-      <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-4xl">
-        <ResponsiveContainer width="100%" height={400}>
-          <LineChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
-            <Line type="monotone" dataKey="visitorCount" stroke="#8884d8" activeDot={{ r: 8 }} />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+    <div className="container mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6">Analytics</h1>
+      <ResponsiveContainer width="100%" height={400}>
+        <ComposedChart data={chartData} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+          <CartesianGrid stroke="#f5f5f5" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="visitorCount" barSize={20} fill="#413ea0" />
+          <Line type="monotone" dataKey="visitorCount" stroke="#ff7300" />
+        </ComposedChart>
+      </ResponsiveContainer>
     </div>
   );
 };

@@ -1,13 +1,17 @@
 import React from "react";
-import Analytics from "./main";
+import AnalyticsChart from "./main";
 import SideBar from "@/src/components/Sidebar";
 
-const AnalyticPage = ({ params }: { params: { id: string } }) => {
-  const { id } = params;
+const AnalyticPage = () => {
   return (
     <>
       <SideBar>
-        <Analytics />
+        <div className="container mx-auto px-4">
+          <h1 className="text-4xl font-bold text-center mt-8 mb-12">URL Analytics</h1>
+          <main className="flex justify-center">
+            <AnalyticsChart />
+          </main>
+        </div>
       </SideBar>
     </>
   );
