@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+![Logo](https://res.cloudinary.com/dszhlpm81/image/upload/v1725119989/assets/UFPMOvuUtfuMxUpG2yy%2BnF743hBOeLEzqjNEDiHixcQ%3D/Logo_mph06v.webp)
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+# iShort URLs
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+iShort URLs is a website platform that provides url shorteners for free and without any restrictions. iShort URLs is a small project to accompany college holidays and while looking for titles for thesis. iShort URLs can also help users to shorten urls without having to send long urls.
+## Screenshots
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Main page view
+![App Screenshot](https://res.cloudinary.com/dszhlpm81/image/upload/v1725119702/assets/UFPMOvuUtfuMxUpG2yy%2BnF743hBOeLEzqjNEDiHixcQ%3D/8b819794-928a-4add-976d-780b0685ad6c.png)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## FAQ
 
-## Learn More
+#### Is iShort URLs free?
 
-To learn more about Next.js, take a look at the following resources:
+Of course it's free and provides all the features without any limits.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### Is my data safe?
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Of course, because it uses the latest technology with the latest security performance.
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Tech Stack
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+**Client:** Nextjs, Typescript, TailwindCSS, Next UI, ShadCN
+
+**Server:** Node, Firebase
+
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+
+## Support
+
+For support, email support@ishort.my.id.
+
