@@ -119,7 +119,7 @@ function ShortUrlsList() {
                     <DropdownItem key="edit" description="Allows you to edit the file" startContent={<EditDocumentIcon className={iconClasses} />} onPress={() => openUpdateModal(url)}>
                       Edit file
                     </DropdownItem>
-                    <DropdownItem key="analytic" showDivider description="Allows you to analyzie url" startContent={<AnalyticIcon className={iconClasses} />} onPress={() => router.push(`/analytics/${url.id}`)}>
+                    <DropdownItem key="analytic" showDivider description="Allows You To Analyze This Data" startContent={<AnalyticIcon className={iconClasses} />} onPress={() => router.push(`/analytics/${url.id}`)}>
                       Analytic Preview
                     </DropdownItem>
                     <DropdownItem
