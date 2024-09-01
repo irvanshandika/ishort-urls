@@ -40,13 +40,25 @@ export default function RedirectPage({ params }: RedirectPageProps) {
       }
     };
 
-    const trackVisitor = async (docId: string, existingVisitors: string[]) => {
+    const trackVisitor = async (docId: string, existingVisitors: { visitorId: string; accessDate: string }[]) => {
       const fp = await FingerprintJS.load();
       const result = await fp.get();
       const visitorId = result.visitorId;
 
-      if (!existingVisitors.includes(visitorId)) {
-        existingVisitors.push(visitorId);
+      // Check if visitor with the same visitorId already exists
+      const isVisitorExist = existingVisitors.some((visitor) => visitor.visitorId === visitorId);
+
+      if (!isVisitorExist) {
+        const currentDate = new Date().toISOString(); // Get current date in ISO format
+
+        // Create a new visitor object with visitorId and accessDate
+        const newVisitor = {
+          visitorId,
+          accessDate: currentDate,
+        };
+
+        existingVisitors.push(newVisitor);
+
         await updateDoc(doc(db, "shorturls", docId), {
           visitors: existingVisitors,
           visitorCount: existingVisitors.length,
@@ -78,7 +90,7 @@ export default function RedirectPage({ params }: RedirectPageProps) {
       <>
         <div className="flex flex-col items-center justify-center p-4">
           <Image
-            src="https://cdn3d.iconscout.com/3d/free/thumb/free-404-error-3d-illustration-download-in-png-blend-fbx-gltf-file-formats--alert-warning-no-results-found-empty-state-pack-seo-web-illustrations-2969402.png?f=webp" // Replace this with a relevant error image
+            src="https://cdn3d.iconscout.com/3d/free/thumb/free-404-error-3d-illustration-download-in-png-blend-fbx-gltf-file-formats--alert-warning-no-results-found-empty-state-pack-seo-web-illustrations-2969402.png?f=webp"
             alt="Error"
             width={300}
             height={300}
