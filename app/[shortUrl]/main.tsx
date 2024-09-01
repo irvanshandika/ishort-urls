@@ -6,13 +6,14 @@ import { db } from "@/src/config/FirebaseConfig";
 import Image from "next/image";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import Link from "next/link";
+import { Button } from "@nextui-org/react";
 
 interface RedirectPageProps {
   params: { shortUrl: string };
 }
 
 export default function RedirectPage({ params }: RedirectPageProps) {
-  const [countdown, setCountdown] = useState(3); // 3-second countdown
+  const [countdown, setCountdown] = useState(5);
   const [longUrl, setLongUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -64,11 +65,10 @@ export default function RedirectPage({ params }: RedirectPageProps) {
 
       const redirectTimer = setTimeout(() => {
         router.push(longUrl);
-      }, 3000);
+      }, 5000);
 
       return () => {
         clearInterval(timer);
-        clearTimeout(redirectTimer);
       };
     }
   }, [longUrl, router]);
@@ -96,11 +96,26 @@ export default function RedirectPage({ params }: RedirectPageProps) {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <div className="flex flex-col items-center justify-center mt-[5vh] bg-gray-100">
         <h1 className="text-3xl font-bold mb-4">Redirecting...</h1>
         <p className="text-lg mb-2">You will be redirected to:</p>
-        <p className="text-blue-500 text-lg underline mb-4">{longUrl}</p>
-        <p className="text-gray-600">in {countdown} seconds...</p>
+        <div className="absolute">
+          {longUrl && (
+            <>
+              <iframe src={longUrl} className="lg:w-[40vw] w-full lg:h-[50vh] h-[50vh]" />
+            </>
+          )}
+        </div>
+        <div className="relative lg:w-[40vw] w-full lg:h-[51vh] h-[50vh] bg-opacity-10 bg-gray-200 text-gray-600 translate-y-[-5vh]">
+          <div className="flex justify-center items-center">
+            <span className="font-bold text-white mt-[20vh]">Review</span>
+          </div>
+        </div>
+        <p className="text-blue-500 text-lg underline">{longUrl}</p>
+        <p className="text-gray-600 mb-[-10vh]">in {countdown} seconds...</p>
+        <Button variant="flat" color="danger" className="translate-y-[12vh]" onClick={() => router.push("/")}>
+          Cancle
+        </Button>
       </div>
     </>
   );
