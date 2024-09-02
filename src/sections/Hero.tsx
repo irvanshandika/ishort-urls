@@ -121,7 +121,7 @@ function HeroSection() {
           <p className="text-sm mt-4">Sign up your account to enjoy unlimited URL shortening</p>
         </div>
         <div className="md:w-1/2 mt-10 md:mt-0 flex justify-center">
-          <Image src={Illustration} alt="URL Shortening Illustration" className="w-[500px] h-[500px]" width={100} height={100} />
+          <Image src={Illustration} alt="URL Shortening Illustration" className="lg:w-[500px] lg:h-[500px] object-cover" width={500} height={500} />
         </div>
       </div>
     </section>

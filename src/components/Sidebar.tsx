@@ -75,13 +75,15 @@ export default function SideBar({ children }: { children: React.ReactNode }) {
           </div>
           <div>
             {user && user.photoURL ? (
-              <SidebarLink
-                link={{
-                  label: `${user && user.displayName}`,
-                  href: "#",
-                  icon: <Image src={user.photoURL} className="h-7 w-7 flex-shrink-0 rounded-full" width={50} height={50} alt="Avatar" />,
-                }}
-              />
+              <>
+                <SidebarLink
+                  link={{
+                    label: `${user && user.displayName}`,
+                    href: "#",
+                    icon: <Image src={user.photoURL} className="h-7 w-7 flex-shrink-0 rounded-full" width={50} height={50} alt="Avatar" />,
+                  }}
+                />
+              </>
             ) : (
               <SidebarLink
                 link={{

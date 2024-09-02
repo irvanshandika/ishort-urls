@@ -18,7 +18,7 @@ function ProfilePage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [photoURL, setPhotoURL] = useState("");
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null); // For image preview
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -36,10 +36,9 @@ function ProfilePage() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file && file.size <= 10 * 1024 * 1024) {
-      // 10MB limit
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPhotoPreview(reader.result as string); // Preview the selected image
+        setPhotoPreview(reader.result as string);
       };
       reader.readAsDataURL(file);
     } else {
@@ -54,7 +53,6 @@ function ProfilePage() {
         let newPhotoURL = photoURL;
 
         if (photoPreview && photoPreview !== user.photoURL) {
-          // Upload new profile photo if there's a change
           const file = (document.getElementById("photo") as HTMLInputElement).files?.[0];
           if (file) {
             const storageRef = ref(storage, `profileImages/${user.uid}`);
@@ -63,7 +61,6 @@ function ProfilePage() {
           }
         }
 
-        // Update Firestore document
         await updateDoc(doc(db, "users", user.uid), {
           displayName,
           email,
@@ -95,44 +92,77 @@ function ProfilePage() {
 
   return (
     <SideBar>
-      <div className="flex flex-col items-center px-4 py-2">
-        <h1 className="text-2xl font-bold mb-4">Edit Profile</h1>
+      <div className="max-w-4xl mx-auto py-12 px-6">
+        <h1 className="text-3xl font-extrabold text-gray-900 mb-8">Edit Your Profile</h1>
         {successMessage && <SuccessAlert2 message={successMessage} />}
         {errorMessage && <ErrorAlert message={errorMessage} />}
-        <form onSubmit={handleSubmit} className="w-full max-w-md">
-          <div className="mb-4">
-            <label htmlFor="displayName" className="block text-gray-700">
-              Name
-            </label>
-            <input type="text" id="displayName" value={displayName} onChange={(e) => setDisplayName(e.target.value)} className="mt-1 p-2 w-full border rounded" />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700">
-              Email
-            </label>
-            <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 p-2 w-full border rounded" />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-700">
-              Password
-            </label>
-            <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1 p-2 w-full border rounded" />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="photo" className="block text-gray-700">
-              Profile Photo
-            </label>
-            <input type="file" id="photo" accept="image/*" onChange={handleFileChange} className="mt-1 p-2 w-full border rounded" />
-            {photoPreview && (
-              <div className="mt-4">
-                <p className="text-gray-700">Image Preview:</p>
+
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="space-y-4">
+            <div className="flex items-center gap-6">
+              {photoPreview ? (
                 <Image src={photoPreview} alt="Profile Preview" className="rounded-full w-32 h-32 object-cover" width={100} height={100} />
+              ) : (
+                <div className="bg-gray-200 rounded-full w-32 h-32 flex items-center justify-center text-gray-400 text-2xl">
+                  <i className="fa fa-user"></i>
+                </div>
+              )}
+              <div className="w-full">
+                <label className="block text-sm font-medium text-gray-700">Profile Photo</label>
+                <input type="file" id="photo" accept="image/*" onChange={handleFileChange} className="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
               </div>
-            )}
+            </div>
           </div>
-          <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
-            Save Changes
-          </button>
+
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="displayName" className="block text-sm font-medium text-gray-700">
+                Name
+              </label>
+              <input
+                type="text"
+                id="displayName"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                className="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                placeholder="Leave empty to keep current password"
+              />
+            </div>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+              Save Changes
+            </button>
+          </div>
         </form>
       </div>
     </SideBar>
