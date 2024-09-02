@@ -84,7 +84,7 @@ function HeroSection() {
       <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
         <div className="md:w-1/2 flex flex-col items-start">
           <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
-            Simplify Your Links with <span className="text-blue-500">iShort URLs</span>
+            Simplify Your Links with <span className="text-blue-600">iShort URLs</span>
           </h1>
           <p className="text-lg md:text-xl mb-6">Tired of long and confusing URLs? With iShort URLs, you can easily shorten your links for a clean and concise look.</p>
           <form className="w-full max-w-md items-center mb-6 flex flex-col" onSubmit={handleSubmit}>
@@ -104,7 +104,7 @@ function HeroSection() {
               required
               className="w-full py-[7px] px-4 my-3 rounded-lg text-gray-800 border border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <Button className="bg-blue-500 text-gray-100 font-semibold ml-3 rounded-lg hover:bg-blue-300 transition duration-300 ease-in-out" type="submit" disabled={isLoading}>
+            <Button className="bg-blue-600 text-gray-100 font-semibold ml-3 rounded-lg hover:bg-blue-500 transition duration-300 ease-in-out" type="submit" disabled={isLoading}>
               {isLoading ? "Shortening..." : "Shorten URL"}
             </Button>
           </form>
@@ -121,7 +121,7 @@ function HeroSection() {
           <p className="text-sm mt-4">Sign up your account to enjoy unlimited URL shortening</p>
         </div>
         <div className="md:w-1/2 mt-10 md:mt-0 flex justify-center">
-          <Image src={Illustration} alt="URL Shortening Illustration" width={500} height={500} />
+          <Image src={Illustration} alt="URL Shortening Illustration" className="w-[500px] h-[500px]" width={100} height={100} />
         </div>
       </div>
     </section>
