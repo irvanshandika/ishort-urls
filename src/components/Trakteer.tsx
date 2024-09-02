@@ -6,7 +6,7 @@ function Trakteer() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
     <>
-      <button onClick={onOpen}>
+      <button onClick={onOpen} aria-label="Trakteer">
         <TrakteerIcon className="lg:w-20 lg:translate-y-[3px] w-20" />
       </button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
