@@ -84,7 +84,7 @@ function HeroSection() {
       <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
         <div className="md:w-1/2 flex flex-col items-start">
           <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
-            Simplify Your Links with <span className="text-yellow-300">iShort URLs</span>
+            Simplify Your Links with <span className="text-blue-500">iShort URLs</span>
           </h1>
           <p className="text-lg md:text-xl mb-6">Tired of long and confusing URLs? With iShort URLs, you can easily shorten your links for a clean and concise look.</p>
           <form className="w-full max-w-md items-center mb-6 flex flex-col" onSubmit={handleSubmit}>
@@ -93,7 +93,7 @@ function HeroSection() {
               value={longUrl}
               onChange={(e) => setLongUrl(e.target.value)}
               placeholder="Paste your long URL here"
-              className="w-full py-[7px] px-4 rounded-lg text-gray-800 border border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-300"
+              className="w-full py-[7px] px-4 rounded-lg text-gray-800 border border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
             <input
@@ -102,9 +102,9 @@ function HeroSection() {
               onChange={(e) => setCustomShortUrl(e.target.value)}
               placeholder="Custom short URL"
               required
-              className="w-full py-[7px] px-4 my-3 rounded-lg text-gray-800 border border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-300"
+              className="w-full py-[7px] px-4 my-3 rounded-lg text-gray-800 border border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <Button className="bg-yellow-300 text-gray-900 font-semibold ml-3 rounded-lg hover:bg-yellow-400 transition duration-300 ease-in-out" type="submit" disabled={isLoading}>
+            <Button className="bg-blue-500 text-gray-100 font-semibold ml-3 rounded-lg hover:bg-blue-300 transition duration-300 ease-in-out" type="submit" disabled={isLoading}>
               {isLoading ? "Shortening..." : "Shorten URL"}
             </Button>
           </form>
@@ -113,7 +113,7 @@ function HeroSection() {
               type="text"
               value={`https://${process.env.NODE_ENV === "production" ? "ishort.my.id" : "localhost:3000"}/${shortUrl}`}
               readOnly
-              className="w-full py-[7px] px-4 mt-4 rounded-lg text-gray-800 border border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-300"
+              className="w-full py-[7px] px-4 mt-4 rounded-lg text-gray-800 border border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           )}
           {success && <SuccessAlert2 message={success} />}

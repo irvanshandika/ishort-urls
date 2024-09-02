@@ -17,16 +17,19 @@ export default function NavigasiBar() {
 
   const menuItems = [
     {
-      label: "Home",
+      title: "Home",
       href: "/",
+      label: "Home",
     },
     {
-      label: "About",
+      title: "About",
       href: "/about",
+      label: "About",
     },
     {
-      label: "Contact",
+      title: "Contact",
       href: "/contact",
+      label: "Contact",
     },
   ];
 
@@ -55,8 +58,8 @@ export default function NavigasiBar() {
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         {menuItems.map((item, index) => (
           <NavbarItem key={index}>
-            <Link color={index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"} href={item.href} className={pathname === item.href ? "font-bold text-blue-600" : ""}>
-              {item.label}
+            <Link color={index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"} href={item.href} className={pathname === item.href ? "font-bold text-blue-600" : ""} aria-label={item.label}>
+              {item.title}
             </Link>
           </NavbarItem>
         ))}
@@ -84,7 +87,7 @@ export default function NavigasiBar() {
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={index}>
             <Link color={index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"} className={`w-full ${pathname === item.href ? "font-bold text-blue-600" : ""}`} href={item.href} size="lg">
-              {item.label}
+              {item.title}
             </Link>
           </NavbarMenuItem>
         ))}
