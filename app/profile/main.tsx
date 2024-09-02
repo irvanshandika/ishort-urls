@@ -29,7 +29,7 @@ function ProfilePage() {
       setDisplayName(user.displayName || "");
       setEmail(user.email || "");
       setPhotoURL(user.photoURL || "");
-      setPhotoPreview(user.photoURL || ""); // Set initial preview to existing photoURL
+      setPhotoPreview(user.photoURL || "");
     }
   }, [user, loading, router]);
 

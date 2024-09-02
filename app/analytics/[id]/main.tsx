@@ -4,6 +4,9 @@ import { db } from "@/src/config/FirebaseConfig";
 import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
 import { ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import moment from "moment";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useRouter } from "next/navigation";
+import { auth } from "@/src/config/FirebaseConfig";
 
 interface VisitorData {
   date: string;
@@ -12,6 +15,14 @@ interface VisitorData {
 
 const Analytics: React.FC = () => {
   const [data, setData] = useState<VisitorData[]>([]);
+  const [user, loading] = useAuthState(auth);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/forbidden");
+    }
+  }, [user, loading, router]);
 
   useEffect(() => {
     const fetchVisitorData = async () => {
