@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Textarea } from "@nextui-org/react";
 import { db, auth } from "@/src/config/FirebaseConfig";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, query, where, getDocs, serverTimestamp } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function InputUrls() {
@@ -11,9 +11,9 @@ export default function InputUrls() {
   const [longUrl, setLongUrl] = useState("");
   const [shortUrl, setShortUrl] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
+  const [errorAlertMessage, setErrorAlertMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [user] = useAuthState(auth);
-
 
   const handleSubmit = async () => {
     if (!title || !longUrl || !shortUrl || !user) return;
@@ -21,23 +21,37 @@ export default function InputUrls() {
     setLoading(true);
 
     try {
-      await addDoc(collection(db, "shorturls"), {
-        title,
-        longUrl,
-        shortUrl,
-        createdAt: serverTimestamp(),
-        visitorCount: 0,
-        uid: user.uid,
-      });
+      // Check if the shortUrl already exists in the database
+      const q = query(collection(db, "shorturls"), where("shortUrl", "==", shortUrl));
+      const querySnapshot = await getDocs(q);
 
-      setAlertMessage("URL Anda berhasil disimpan!");
-      setTimeout(() => {
-        setAlertMessage("");
-        setLongUrl("");
-        setShortUrl("");
-        onOpenChange();
-        window.location.reload();
-      }, 3000);
+      if (!querySnapshot.empty) {
+        // If shortUrl already exists, show an alert message
+        setErrorAlertMessage("This short url name is already in use.");
+        setTimeout(() => {
+          setErrorAlertMessage("");
+        }, 3000);
+      } else {
+        // If shortUrl does not exist, proceed to save the new URL
+        await addDoc(collection(db, "shorturls"), {
+          title,
+          longUrl,
+          shortUrl,
+          createdAt: serverTimestamp(),
+          visitorCount: 0,
+          uid: user.uid,
+        });
+
+        setAlertMessage("Your URL was saved successfully!");
+        setTimeout(() => {
+          setAlertMessage("");
+          setTitle("");
+          setLongUrl("");
+          setShortUrl("");
+          onOpenChange();
+          window.location.reload();
+        }, 3000);
+      }
     } catch (error) {
       console.error("Error adding document: ", error);
     } finally {
@@ -51,17 +65,20 @@ export default function InputUrls() {
         <i className="fa-solid fa-plus"></i>
       </Button>
 
-      {/* Alert Message */}
-      {alertMessage && (
-        <>
-          <div className="fixed top-5 right-5 bg-green-500 text-white p-4 rounded-lg shadow-lg">{alertMessage}</div>
-        </>
-      )}
-
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
         <ModalContent>
           {(onClose) => (
             <>
+              {alertMessage && (
+                <>
+                  <div className="fixed top-5 right-5 bg-green-500 text-white p-4 rounded-lg shadow-lg">{alertMessage}</div>
+                </>
+              )}
+              {errorAlertMessage && (
+                <>
+                  <div className="fixed top-5 right-5 bg-red-500 text-white p-4 rounded-lg shadow-lg">{errorAlertMessage}</div>
+                </>
+              )}
               <ModalHeader className="flex flex-col gap-1">Add Short URLs</ModalHeader>
               <ModalBody>
                 <Input isRequired type="text" label="Title" placeholder="Hello World" variant="bordered" value={title} onChange={(e) => setTitle(e.target.value)} required />
