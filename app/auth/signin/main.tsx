@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
 import React, { useState } from "react";
-import { Button } from "@nextui-org/react";
+import { Avatar, Button } from "@nextui-org/react";
 import Link from "next/link";
 import { auth, db } from "@/src/config/FirebaseConfig";
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
@@ -10,11 +10,12 @@ import GoogleIcon from "@/src/components/icons/GoogleIcon";
 import { useRouter } from "next/navigation";
 import Logo from "@/src/components/images/Logo.webp";
 import Image from "next/image";
+import { toast } from "react-hot-toast";
+import UserIcon from "@/src/components/icons/UserIcon";
 
 function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [alertMessage, setAlertMessage] = useState("");
   const router = useRouter();
 
   const handleSignIn = async (e: React.FormEvent) => {
@@ -28,14 +29,46 @@ function SignInPage() {
       const userDoc = await getDoc(userDocRef);
 
       if (!userDoc.exists()) {
-        setAlertMessage(`Sorry, the account with email ${email} has not been registered. Please register on the signup page.`);
+        toast.error(`Sorry, the account with email ${email} has not been registered. Please register on the signup page.`);
         return;
       }
 
+      toast.custom(
+        (t) => (
+          <>
+            <div className="max-w-xs relative bg-white border border-gray-200 rounded-xl shadow-lg dark:bg-neutral-800 dark:border-neutral-700" role="alert" aria-labelledby="hs-toast-avatar-label">
+              <div className="flex p-4">
+                <div className="shrink-0">
+                  {user && user.photoURL ? <Avatar src={user.photoURL} className="size-8 text-large" /> : <UserIcon className="w-8 h-8" />}
+                  <button
+                    type="button"
+                    onClick={() => toast.dismiss(t.id)}
+                    className="absolute top-3 end-3 inline-flex shrink-0 justify-center items-center size-5 rounded-lg text-gray-800 opacity-50 hover:opacity-100 focus:outline-none focus:opacity-100 dark:text-white"
+                    aria-label="Close">
+                    <span className="sr-only">Close</span>
+                    <svg className="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M18 6 6 18"></path>
+                      <path d="m6 6 12 12"></path>
+                    </svg>
+                  </button>
+                </div>
+                <div className="ms-4 me-5">
+                  <h3 id="hs-toast-avatar-label" className="text-gray-800 font-medium text-sm dark:text-white">
+                    <span className="font-semibold">{user.displayName}</span>, Selamat Datang Kembali!
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </>
+        ),
+        {
+          duration: 6000,
+        }
+      );
       router.push("/");
     } catch (error) {
       console.error("Error signing in:", error);
-      setAlertMessage("Incorrect email or password. Please try again.");
+      toast.error("Incorrect email or password. Please try again.");
     }
   };
 
@@ -50,21 +83,52 @@ function SignInPage() {
       const userDoc = await getDoc(userDocRef);
 
       if (!userDoc.exists()) {
-        setAlertMessage(`Sorry, the account with email ${user.email} has not been registered. Please register on the signup page.`);
+        toast.error(`Sorry, the account with email ${user.email} has not been registered. Please register on the signup page.`);
         return;
       }
 
+      toast.custom(
+        (t) => (
+          <>
+            <div className="max-w-xs relative bg-white border border-gray-200 rounded-xl shadow-lg dark:bg-neutral-800 dark:border-neutral-700" role="alert" aria-labelledby="hs-toast-avatar-label">
+              <div className="flex p-4">
+                <div className="shrink-0">
+                  {user && user.photoURL ? <Avatar src={user.photoURL} className="size-8 text-large" /> : <UserIcon className="w-8 h-8" />}
+                  <button
+                    type="button"
+                    onClick={() => toast.dismiss(t.id)}
+                    className="absolute top-3 end-3 inline-flex shrink-0 justify-center items-center size-5 rounded-lg text-gray-800 opacity-50 hover:opacity-100 focus:outline-none focus:opacity-100 dark:text-white"
+                    aria-label="Close">
+                    <span className="sr-only">Close</span>
+                    <svg className="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M18 6 6 18"></path>
+                      <path d="m6 6 12 12"></path>
+                    </svg>
+                  </button>
+                </div>
+                <div className="ms-4 me-5">
+                  <h3 id="hs-toast-avatar-label" className="text-gray-800 font-medium text-sm dark:text-white">
+                    <span className="font-semibold">{user.displayName}</span>, Selamat Datang Kembali!
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </>
+        ),
+        {
+          duration: 6000,
+        }
+      );
       router.push("/");
     } catch (error) {
       console.error("Error signing in with Google:", error);
-      setAlertMessage("An error occurred while logging in with Google. Please try again.");
+      toast.error("An error occurred while logging in with Google. Please try again.");
     }
   };
 
   return (
     <>
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-        {alertMessage && <div className="fixed top-5 bg-red-500 text-white p-4 rounded-lg shadow-lg">{alertMessage}</div>}
         <div className="flex flex-col bg-white shadow-md px-4 sm:px-6 md:px-8 lg:px-10 py-8 rounded-3xl w-50 max-w-md">
           <h1 className="font-medium self-center text-xl sm:text-3xl text-gray-800">Sign In</h1>
           <Link href="/" className="flex justify-center items-center">

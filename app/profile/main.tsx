@@ -101,9 +101,9 @@ function ProfilePage() {
           <div className="space-y-4">
             <div className="flex items-center gap-6">
               {photoPreview ? (
-                <Image src={photoPreview} alt="Profile Preview" className="rounded-full w-32 h-32 object-cover" width={100} height={100} />
+                <Image src={photoPreview} alt="Profile Preview" className="rounded-full w-32 h-32 object-cover" width={0} height={0} />
               ) : (
-                <div className="bg-gray-200 rounded-full w-32 h-32 flex items-center justify-center text-gray-400 text-2xl">
+                <div className="bg-gray-200 rounded-full w-32 h-24 flex items-center justify-center text-gray-400 text-2xl">
                   <i className="fa fa-user"></i>
                 </div>
               )}

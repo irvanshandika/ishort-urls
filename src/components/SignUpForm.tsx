@@ -10,13 +10,12 @@ import bcrypt from "bcryptjs";
 import { useRouter } from "next/navigation";
 import Logo from "@/src/components/images/Logo.webp";
 import Image from "next/image";
+import { toast } from "react-hot-toast";
 
 function SignUpForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [alertMessage, setAlertMessage] = useState(""); // State for alert message
-  const [showAlert, setShowAlert] = useState(false); // State for showing alert
   const router = useRouter();
 
   const handleSignUp = async (e: React.FormEvent) => {
@@ -37,14 +36,13 @@ function SignUpForm() {
         password: hashedPassword,
       });
 
-      setAlertMessage("Success: Your account has been successfully registered");
-      setShowAlert(true);
-      setTimeout(() => {
-        router.push("/auth/signin");
-      }, 4000);
+      toast.success("Success: Your account has been successfully registered", {
+        duration: 6000,
+      });
+      router.push("/auth/signin");
     } catch (error) {
       console.error("Error signing up:", error);
-      alert("Sign-up failed. Please try again.");
+      toast.error("Sign-up failed. Please try again.");
     }
   };
 
@@ -61,14 +59,13 @@ function SignUpForm() {
         password: null,
       });
 
-      setAlertMessage("Success: Your account has been successfully registered");
-      setShowAlert(true);
-      setTimeout(() => {
-        router.push("/auth/signin");
-      }, 4000);
+      toast.success("Success: Your account has been successfully registered", {
+        duration: 6000,
+      });
+      router.push("/auth/signin");
     } catch (error) {
       console.error("Error with Google sign-up:", error);
-      alert("Google sign-up failed. Please try again.");
+      toast.error("Google sign-up failed. Please try again.");
     }
   };
 
@@ -81,11 +78,6 @@ function SignUpForm() {
         </Link>
         <p className="mt-4 self-center text-xl sm:text-sm text-gray-800">Sign up your account for unlimited access to all features</p>
         <div className="mt-10">
-          {showAlert && (
-            <>
-              <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white py-2 px-4 rounded">{alertMessage}</div>
-            </>
-          )}
           <form onSubmit={handleSignUp}>
             <div className="flex flex-col mb-5">
               <label htmlFor="name" className="mb-1 text-xs tracking-wide text-gray-600">

@@ -7,10 +7,10 @@ import { useRouter } from "next/navigation";
 import Logo from "@/src/components/images/Logo.webp";
 import Image from "next/image";
 import Link from "next/link";
+import { toast } from "react-hot-toast";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
-  const [alertMessage, setAlertMessage] = useState("");
   const router = useRouter();
 
   const handleResetPassword = async (e: React.FormEvent) => {
@@ -19,21 +19,20 @@ function ForgotPassword() {
     try {
       await sendPasswordResetEmail(auth, email);
 
-      setAlertMessage(`Password reset URL successfully sent to ${email}`);
+      toast.success(`Password reset URL successfully sent to ${email}`, {
+        duration: 6000,
+      });
 
-      setTimeout(() => {
-        router.push("/auth/signin");
-      }, 4000);
+      router.push("/auth/signin");
     } catch (error) {
       console.error("Error sending reset email:", error);
-      setAlertMessage("Failed to send password reset email. Please try again.");
+      toast.error("Failed to send password reset email. Please try again.");
     }
   };
 
   return (
     <>
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-        {alertMessage && <div className="fixed top-5 bg-green-500 text-white p-4 rounded-lg shadow-lg">{alertMessage}</div>}
         <div className="flex flex-col bg-white shadow-md px-4 sm:px-6 md:px-8 lg:px-10 py-8 rounded-3xl w-50 max-w-md">
           <h1 className="font-medium self-center text-xl sm:text-3xl text-gray-800">Reset Password</h1>
           <Link href="/" className="flex justify-center items-center">
