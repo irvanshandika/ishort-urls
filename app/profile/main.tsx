@@ -5,11 +5,10 @@ import { useRouter } from "next/navigation";
 import { auth, db, storage } from "@/src/config/FirebaseConfig";
 import { doc, updateDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import ErrorAlert from "@/src/components/ErrorAlert";
-import SuccessAlert2 from "@/src/components/SuccessAlert2";
 import { Spinner } from "@nextui-org/spinner";
 import Image from "next/image";
 import SideBar from "@/src/components/Sidebar";
+import { toast } from "react-hot-toast";
 
 function ProfilePage() {
   const [user, loading, error] = useAuthState(auth);
@@ -19,8 +18,6 @@ function ProfilePage() {
   const [password, setPassword] = useState("");
   const [photoURL, setPhotoURL] = useState("");
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     if (!loading && !user) {
@@ -42,7 +39,7 @@ function ProfilePage() {
       };
       reader.readAsDataURL(file);
     } else {
-      setErrorMessage("File size exceeds 10MB.");
+      toast.error("File size exceeds 10MB.");
     }
   };
 
@@ -67,13 +64,15 @@ function ProfilePage() {
           photoURL: newPhotoURL,
         });
 
-        setSuccessMessage("Profile updated successfully.");
+        toast.success("Profile updated successfully.", {
+          icon: "🚀",
+          duration: 3000,
+        });
         setTimeout(() => {
-          setSuccessMessage("");
           window.location.reload();
         }, 3000);
       } catch (err) {
-        setErrorMessage("Error updating profile. Please try again.");
+        toast.error("Error updating profile. Please try again.");
       }
     }
   };
@@ -86,16 +85,10 @@ function ProfilePage() {
     );
   }
 
-  if (error) {
-    return <ErrorAlert message={`Error: ${error.message}`} />;
-  }
-
   return (
     <SideBar>
       <div className="max-w-4xl mx-auto py-12 px-6">
         <h1 className="text-3xl font-extrabold text-gray-900 mb-8">Edit Your Profile</h1>
-        {successMessage && <SuccessAlert2 message={successMessage} />}
-        {errorMessage && <ErrorAlert message={errorMessage} />}
 
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="space-y-4">

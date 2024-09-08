@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { db } from "@/src/config/FirebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
 import { Button } from "@nextui-org/react";
+import { toast } from "react-hot-toast";
 
 const Contact = () => {
   const [firstName, setFirstName] = useState("");
@@ -11,8 +12,6 @@ const Contact = () => {
   const [company, setCompany] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
-  const [successAlert, setSuccessAlert] = useState(false);
-  const [errorAlert, setErrorAlert] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,9 +29,11 @@ const Contact = () => {
       });
 
       // Show success alert and reset form
-      setSuccessAlert(true);
+      toast.success("Message sent successfully!", {
+        icon: "🚀",
+        duration: 3000,
+      });
       setTimeout(() => {
-        setSuccessAlert(false);
         setFirstName("");
         setLastName("");
         setEmail("");
@@ -42,20 +43,21 @@ const Contact = () => {
         window.location.reload();
       }, 3000);
     } catch (error) {
-      setErrorAlert(true);
-      setTimeout(() => setErrorAlert(false), 3000);
+      toast.error("Failed to send message. Please try again later.", {
+        icon: "🚨",
+        duration: 3000,
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-6">
+    <div className="min-h-screen bg-gray-100 pt-12 px-6">
       <div className="max-w-3xl mx-auto bg-white p-8 shadow-lg rounded-lg">
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Contact Us</h2>
         <p className="text-center text-gray-600 mb-8">Feel free to report a bug or reach out for collaboration.</p>
-
-        {successAlert && <div className="bg-green-500 text-white text-center p-3 rounded mb-4">Your message has been sent successfully!</div>}
-
-        {errorAlert && <div className="bg-red-500 text-white text-center p-3 rounded mb-4">There was an error sending your message. Please try again.</div>}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
