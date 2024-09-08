@@ -5,18 +5,16 @@ import Image from "next/image";
 import Illustration from "@/src/components/images/Illustration.webp";
 import { db } from "@/src/config/FirebaseConfig";
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
-import SuccessAlert2 from "@/src/components/SuccessAlert2";
-import ErrorAlert from "@/src/components/ErrorAlert";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/src/config/FirebaseConfig";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
+import { snippet } from "@nextui-org/react";
 
 function HeroSection() {
   const [longUrl, setLongUrl] = useState("");
   const [customShortUrl, setCustomShortUrl] = useState("");
   const [shortUrl, setShortUrl] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [shortCount, setShortCount] = useState(0);
   const [user] = useAuthState(auth);
@@ -47,11 +45,8 @@ function HeroSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (shortCount >= 5 && !user) {
-      setError("Maaf, quota short urls publik anda telah melampaui batas. Jika ingin mengakses tanpa batasan, harap login");
-      setTimeout(() => {
-        setError("");
-        router.refresh(); // Refresh the page
-      }, 5000);
+      toast.error("You have reached the maximum limit of 5 short URLs. Please sign up to create more.");
+      router.refresh(); // Refresh the page
       return;
     }
 
@@ -69,18 +64,18 @@ function HeroSection() {
       await addDoc(collection(db, "shorturls"), shortUrlData);
 
       setShortUrl(customShortUrl ? customShortUrl : shortUrlData.shortUrl);
-      setSuccess("Short URL created successfully!");
+      toast.success("Short URL created successfully!");
       setLongUrl("");
       setCustomShortUrl("");
     } catch (err) {
-      setError("Failed to create short URL. Please try again.");
+      toast.error("Failed to create short URL. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <section className="py-20">
+    <section className="pt-20 lg:ml-[8vw]">
       <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
         <div className="md:w-1/2 flex flex-col items-start">
           <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
@@ -109,15 +104,16 @@ function HeroSection() {
             </Button>
           </form>
           {shortUrl && (
-            <input
-              type="text"
-              value={`https://${process.env.NODE_ENV === "production" ? "ishort.my.id" : "localhost:3000"}/${shortUrl}`}
-              readOnly
-              className="w-full py-[7px] px-4 mt-4 rounded-lg text-gray-800 border border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <>
+              <input
+                type="text"
+                value={`https://${process.env.NODE_ENV === "production" ? "ishort.my.id" : "localhost:3000"}/${shortUrl}`}
+                readOnly
+                className="w-full py-[7px] px-4 mt-4 rounded-lg text-gray-800 border border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </>
           )}
-          {success && <SuccessAlert2 message={success} />}
-          {error && <ErrorAlert message={error} />}
+
           <p className="text-sm mt-4">Sign up your account to enjoy unlimited URL shortening</p>
         </div>
         <div className="md:w-1/2 mt-10 md:mt-0 flex justify-center">
