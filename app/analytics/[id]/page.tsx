@@ -1,6 +1,11 @@
 import React from "react";
 import AnalyticsChart from "./main";
 import SideBar from "@/src/components/Sidebar";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Analytic | iShort URLs",
+};
 
 const AnalyticPage = () => {
   return (
