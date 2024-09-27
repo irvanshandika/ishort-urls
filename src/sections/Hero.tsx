@@ -102,17 +102,17 @@ function HeroSection() {
             <Button className="bg-blue-600 text-gray-100 font-semibold ml-3 rounded-lg hover:bg-blue-500 transition duration-300 ease-in-out" type="submit" disabled={isLoading}>
               {isLoading ? "Shortening..." : "Shorten URL"}
             </Button>
+            {shortUrl && (
+              <>
+                <input
+                  type="text"
+                  value={`https://${process.env.NODE_ENV === "production" ? "ishort.my.id" : "localhost:3000"}/${shortUrl}`}
+                  readOnly
+                  className="w-full py-[7px] px-4 my-3 rounded-lg text-gray-800 border border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </>
+            )}
           </form>
-          {shortUrl && (
-            <>
-              <input
-                type="text"
-                value={`https://${process.env.NODE_ENV === "production" ? "ishort.my.id" : "localhost:3000"}/${shortUrl}`}
-                readOnly
-                className="w-full py-[7px] px-4 mt-4 rounded-lg text-gray-800 border border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </>
-          )}
 
           <p className="text-sm mt-4">Sign up your account to enjoy unlimited URL shortening</p>
         </div>
