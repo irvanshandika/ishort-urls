@@ -97,7 +97,7 @@ export default function RedirectPage({ params }: RedirectPageProps) {
         <h1 className="text-3xl font-bold text-red-600 mb-2">Error</h1>
         <p className="text-lg text-gray-700 mb-4">{error}</p>
         <Link href="/">
-          <a className="text-blue-500 underline">Go back to the homepage</a>
+          <span className="text-blue-500 underline">Go back to the homepage</span>
         </Link>
       </div>
     );
@@ -109,7 +109,6 @@ export default function RedirectPage({ params }: RedirectPageProps) {
       <p className="text-lg mb-2">You will be redirected to:</p>
       <p className="text-blue-500 text-lg underline break-all">{longUrl}</p>
       <p className="text-gray-600 mb-4">in {countdown} seconds...</p>
-      <div className="relative w-full max-w-xl aspect-w-16 aspect-h-9 mb-4">{longUrl && <iframe src={longUrl} className="w-full h-full" />}</div>
       <Button variant="flat" color="danger" onClick={() => router.push("/")}>
         Back to Home
       </Button>
